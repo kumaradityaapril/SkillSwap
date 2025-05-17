@@ -33,7 +33,7 @@ const Signup = () => {
         <h3 className="text-2xl font-bold text-center">Sign Up</h3>
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
           <Form>
-            <div>
+            <div className="mt-4">
               <label className="block" htmlFor="email">Email</label>
               <Field
                 type="text"

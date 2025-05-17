@@ -2,7 +2,8 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import { signup } from '../services/authService';
+import authService from '../services/authService';
+
 const Signup = () => {
   const initialValues = {
     email: '',
@@ -19,11 +20,11 @@ const Signup = () => {
   });
 
   const onSubmit = async (values) => {
- try {
- const response = await signup(values);
- console.log('Signup successful:', response);
+    try {
+      const response = await authService.signup(values);
+      console.log('Signup successful:', response);
     } catch (error) {
- console.error('Signup failed:', error);
+      console.error('Signup failed:', error);
     }
   };
 
@@ -33,7 +34,7 @@ const Signup = () => {
         <h3 className="text-2xl font-bold text-center">Sign Up</h3>
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
           <Form>
-            <div className="mt-4">
+            <div>
               <label className="block" htmlFor="email">Email</label>
               <Field
                 type="text"
@@ -67,13 +68,14 @@ const Signup = () => {
               <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-sm" />
             </div>
             <div className="flex items-baseline justify-between">
-              <button className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Sign Up</button>
+              <button type="submit" className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Sign Up</button>
             </div>
-          </div>
           </Form>
         </Formik>
+      </div>
     </div>
   );
 };
 
 export default Signup;
+

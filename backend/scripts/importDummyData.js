@@ -33,18 +33,18 @@ db.once('open', async () => {
 
     // Check if user already exists
     let user = await User.findOne({ email: dummyUser.email });
-
+    
     if (!user) {
       // Hash password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(dummyUser.password, salt);
-
+      
       // Create new user
       user = await User.create({
         ...dummyUser,
         password: hashedPassword
       });
-
+      
       console.log(`Created dummy user: ${user.name} (${user.email})`);
     } else {
       console.log(`Using existing user: ${user.name} (${user.email})`);

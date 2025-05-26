@@ -12,7 +12,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ThemeProvider>
       <UserProvider>
         <ChatProvider>
-          <RouterProvider router={router} />
+          <RouterProvider 
+            router={router} 
+            future={{ v7_startTransition: true }}
+          />
         </ChatProvider>
       </UserProvider>
     </ThemeProvider>

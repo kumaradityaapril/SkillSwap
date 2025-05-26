@@ -6,7 +6,7 @@ import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import HomePage from "./components/home/HomePage";
-import SkillsPage from "./components/skills/SkillsPage";
+import SkillsPage from "./pages/SkillsPage";
 import SkillDetail from "./components/skills/SkillDetail";
 
 // Lazy load components for better performance

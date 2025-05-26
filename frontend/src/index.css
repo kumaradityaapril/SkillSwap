@@ -1,10 +1,10 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
+
 /* Tailwind CSS imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import fonts */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 /* Custom base styles */
 @layer base {
@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply min-h-screen bg-gray-50 text-gray-900 font-sans dark:bg-gray-900 dark:text-gray-100;
+    @apply min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-gray-100;
   }
 
   h1,
@@ -22,7 +22,7 @@
   h4,
   h5,
   h6 {
-    @apply font-heading font-semibold;
+    @apply font-semibold font-heading;
   }
 
   h1 {
@@ -41,23 +41,23 @@
 /* Custom component classes */
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex justify-center items-center px-4 py-2 font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
 
   .btn-primary {
-    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500;
+    @apply text-white btn bg-primary-500 hover:bg-primary-600 focus:ring-primary-500;
   }
 
   .btn-secondary {
-    @apply btn bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500;
+    @apply text-white btn bg-secondary-500 hover:bg-secondary-600 focus:ring-secondary-500;
   }
 
   .btn-outline {
-    @apply btn border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800;
+    @apply text-gray-700 border border-gray-300 btn hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800;
+    @apply overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800;
   }
 
   .form-input {
@@ -65,7 +65,7 @@
   }
 
   .form-label {
-    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+    @apply block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300;
   }
 
   .form-error {
@@ -81,5 +81,9 @@
 
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  .text-error {
+    @apply text-red-500;
   }
 }

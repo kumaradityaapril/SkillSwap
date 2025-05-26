@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './components/navigation/Navbar';
+import { AuthProvider } from './context/AuthContext';
+import Header from './components/Header';
 import './App.css';
 
 function App() {
   return (
-    <div className="app-container flex flex-col min-h-screen">
-      <Navbar />
-      <main className="container px-4 py-8 mx-auto flex-grow">
-        <Outlet />
-      </main>
+    <AuthProvider>
+      <div className="app-container flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Outlet />
+        </main>
       <footer className="bg-gray-100 dark:bg-gray-800 py-8 mt-auto">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -38,7 +40,8 @@ function App() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </AuthProvider>
   );
 }
 

@@ -7,7 +7,7 @@ import { UserProvider } from './context/UserContext';
 import { ChatProvider } from './context/ChatContext';
 import { AuthProvider } from './context/AuthContext';
 import './index.css';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -14,7 +14,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-primary-600 dark:text-primary-400 font-heading">
-              SkillTrae
+              SkillSwap
             </Link>
           </div>
 

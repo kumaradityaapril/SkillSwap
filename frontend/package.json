@@ -1,13 +1,17 @@
 {
-  "name": "frontend",
+  "name": "skilltrae-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:prod": "vite build --mode production"
   },
   "dependencies": {
     "@headlessui/react": "^2.0.0",

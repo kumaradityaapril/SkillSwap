@@ -56,7 +56,6 @@ const skillSchema = new mongoose.Schema({
   }],
   averageRating: {
     type: Number,
-    min: [1, 'Rating must be at least 1'],
     max: [5, 'Rating cannot be more than 5'],
     default: 0
   },

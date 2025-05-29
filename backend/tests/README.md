@@ -1,6 +1,6 @@
 # Authentication System Tests
 
-This directory contains tests for the SkillTrae authentication system. The tests verify the functionality of JWT-based authentication, role-based authorization, and email verification.
+This directory contains tests for the SkillSwap authentication system. The tests verify the functionality of JWT-based authentication, role-based authorization, and email verification.
 
 ## Test File: `auth.test.js`
 
@@ -16,7 +16,7 @@ This file contains a comprehensive test suite for the authentication system, inc
 
 ## Prerequisites
 
-1. The SkillTrae backend server must be running on http://localhost:5002
+1. The SkillSwap backend server must be running on http://localhost:5002
 2. MongoDB must be connected and running
 3. Required environment variables must be set:
    - JWT_SECRET
@@ -52,7 +52,7 @@ The test script will output detailed results for each test case to the console. 
 
 ## Authentication System Overview
 
-The SkillTrae authentication system uses:
+The SkillSwap authentication system uses:
 
 - JWT (JSON Web Tokens) for stateless authentication
 - Middleware for protecting routes (`protect` middleware)

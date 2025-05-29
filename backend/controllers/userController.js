@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const Session = require('../models/sessionModel');
 
 // @desc    Register user
 // @route   POST /api/users/register
@@ -226,6 +227,167 @@ exports.deleteUser = async (req, res) => {
       data: {}
     });
   } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get skills for the logged-in user
+// @route   GET /api/users/me/skills
+// @access  Private
+exports.getUserSkills = async (req, res) => {
+  // In a real application, you would fetch skills related to req.user.id
+  // For now, send back empty data to resolve 404
+  res.status(200).json({
+    success: true,
+    data: []
+  });
+};
+
+// @desc    Get sessions for the logged-in user
+// @route   GET /api/users/me/sessions
+// @access  Private
+exports.getUserSessions = async (req, res) => {
+  try {
+    console.log('getUserSessions: User ID:', req.user.id);
+    // Find sessions where user is either learner or mentor
+    const sessions = await Session.find({
+      $or: [
+        { learner: req.user.id },
+        { mentor: req.user.id }
+      ]
+    })
+      .populate('skill', 'title category')
+      .populate('learner', 'name avatar')
+      .populate('mentor', 'name avatar')
+      .sort({ date: 1, startTime: 1 });
+
+    console.log('getUserSessions: Found sessions:', sessions);
+
+    res.status(200).json({
+      success: true,
+      data: sessions
+    });
+  } catch (error) {
+    console.error('Error in getUserSessions:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get stats for the logged-in user
+// @route   GET /api/users/me/stats
+// @access  Private
+exports.getUserStats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Calculate total hours spent in completed sessions
+    const completedSessions = await Session.find({
+      $or: [{ learner: userId }, { mentor: userId }],
+      status: 'completed',
+    });
+
+    let totalDurationMs = 0;
+    completedSessions.forEach(session => {
+      if (session.startTime && session.endTime) {
+        totalDurationMs += new Date(session.endTime) - new Date(session.startTime);
+      }
+    });
+
+    const totalHours = (totalDurationMs / (1000 * 60 * 60)).toFixed(2);
+
+    // Placeholder for Day Streak (requires more complex logic based on session dates)
+    const dayStreak = 0; // Replace with actual calculation later if needed
+
+    res.status(200).json({
+      success: true,
+      data: {
+        hoursSpent: parseFloat(totalHours),
+        dayStreak: dayStreak,
+        // Add other stats here if needed
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Bookmark a skill for the logged-in user
+// @route   POST /api/users/me/bookmark
+// @access  Private
+exports.bookmarkSkill = async (req, res) => {
+  console.log('Attempting to bookmark skill.'); // Temporary log
+  try {
+    const { skillId } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    // Check if skill is already bookmarked
+    if (user.bookmarkedSkills.includes(skillId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Skill already bookmarked'
+      });
+    }
+
+    user.bookmarkedSkills.push(skillId);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Skill bookmarked successfully',
+      data: user.bookmarkedSkills
+    });
+  } catch (error) {
+    console.error('Error bookmarking skill:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Remove a bookmarked skill for the logged-in user
+// @route   DELETE /api/users/me/bookmark/:skillId
+// @access  Private
+exports.removeBookmarkedSkill = async (req, res) => {
+  try {
+    const { skillId } = req.params;
+
+    const user = await User.findById(req.user.id);
+
+    // Check if skill is bookmarked
+    if (!user.bookmarkedSkills.includes(skillId)) {
+      return res.status(404).json({
+        success: false,
+        message: 'Skill not found in bookmarks'
+      });
+    }
+
+    user.bookmarkedSkills = user.bookmarkedSkills.filter(
+      (skill) => skill.toString() !== skillId
+    );
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Skill removed from bookmarks',
+      data: user.bookmarkedSkills
+    });
+  } catch (error) {
+    console.error('Error removing bookmarked skill:', error);
     res.status(500).json({
       success: false,
       message: 'Server error',

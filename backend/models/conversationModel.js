@@ -94,4 +94,5 @@ conversationSchema.methods.resetUnreadCount = async function (userId) {
   return this.save();
 };
 
-module.exports = mongoose.model('Conversation', conversationSchema);
+const Conversation = mongoose.model('Conversation', conversationSchema);
+module.exports = Conversation;

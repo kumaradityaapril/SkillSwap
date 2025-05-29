@@ -8,14 +8,14 @@ function App() {
     <AuthProvider>
       <div className="app-container flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow dark:bg-gray-800 dark:text-gray-100">
           <Outlet />
         </main>
       <footer className="bg-gray-100 dark:bg-gray-800 py-8 mt-auto">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold text-primary-600 dark:text-primary-400 font-heading">SkillTrae</h3>
+              <h3 className="text-xl font-bold text-primary-600 dark:text-primary-400 font-heading">SkillSwap</h3>
               <p className="text-gray-600 dark:text-gray-300 mt-2">Connect, Learn, Grow</p>
             </div>
             <div className="flex space-x-6">
@@ -35,7 +35,7 @@ function App() {
           </div>
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
             <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} SkillTrae. All rights reserved.
+              &copy; {new Date().getFullYear()} SkillSwap. All rights reserved.
             </p>
           </div>
         </div>

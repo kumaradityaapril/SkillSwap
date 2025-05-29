@@ -8,6 +8,9 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import HomePage from "./components/home/HomePage";
 import SkillsPage from "./pages/SkillsPage";
 import SkillDetail from "./components/skills/SkillDetail";
+import SkillPostForm from "./pages/SkillPostForm";
+import MySessionsPage from "./pages/MySessionsPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 // Lazy load components for better performance
 const router = createBrowserRouter([
@@ -36,6 +39,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/my-sessions",
+        element: (
+          <ProtectedRoute>
+            <MySessionsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/skills",
         element: <SkillsPage />,
       },
@@ -58,6 +69,18 @@ const router = createBrowserRouter([
             <Chat />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/post-skill",
+        element: (
+          <ProtectedRoute allowedRoles={['mentor']}>
+            <SkillPostForm />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
       },
     ],
   },

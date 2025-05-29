@@ -43,7 +43,15 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Skill'
   }],
+  bookmarkedSkills: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Skill'
+  }],
   experience: {
+    type: Number,
+    default: 0
+  },
+  postsCount: {
     type: Number,
     default: 0
   },

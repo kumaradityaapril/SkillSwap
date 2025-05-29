@@ -3,11 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { handleAuthSuccess } = useAuth();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -19,12 +21,11 @@ const LoginForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post('/api/users/login', values);
-      localStorage.setItem('token', response.data.token);
       
-      // Show success message before redirecting
+      await handleAuthSuccess(response.data.token);
+      
       setError('');
-      // Redirect after a short delay for better UX
-      setTimeout(() => navigate('/profile'), 500);
+      navigate('/profile');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');
     } finally {
@@ -122,9 +123,9 @@ const LoginForm = () => {
                     </div>
                     
                     <div className="text-sm">
-                      <a href="#" className="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200">
+                      <Link to="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200">
                         Forgot password?
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

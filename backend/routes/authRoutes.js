@@ -1,22 +1,28 @@
 const express = require('express');
-const router = express.Router();
-
-// Import controllers
+const { protect } = require('../middleware/auth');
 const {
-    register,
-    login,
-    verifyEmail,
-    forgotPassword,
-    resetPassword,
-    resendVerification
+  register,
+  login,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+  getMe,
+  updateDetails,
+  updatePassword
 } = require('../controllers/authController');
 
-// Public routes (no authentication required)
+const router = express.Router();
+
+// Public routes
 router.post('/register', register);
 router.post('/login', login);
 router.get('/verify-email/:token', verifyEmail);
 router.post('/forgot-password', forgotPassword);
 router.put('/reset-password/:token', resetPassword);
-router.post('/resend-verification', resendVerification);
+
+// Protected routes
+router.get('/me', protect, getMe);
+router.put('/updatedetails', protect, updateDetails);
+router.put('/updatepassword', protect, updatePassword);
 
 module.exports = router;

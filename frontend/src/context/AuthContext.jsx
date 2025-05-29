@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
 
 const AuthContext = createContext();
 
@@ -14,110 +15,73 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sessionBookedFlag, setSessionBookedFlag] = useState(false); // Add state for session booking flag
 
-  // Initialize Google Sign-In
-  useEffect(() => {
-    const initializeGoogleAuth = async () => {
+  // Function to load user from token
+  const loadUser = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       try {
-        // Load Google Identity Services script
-        if (!window.google) {
-          const script = document.createElement('script');
-          script.src = 'https://accounts.google.com/gsi/client';
-          script.async = true;
-          script.defer = true;
-          document.head.appendChild(script);
-          
-          await new Promise((resolve) => {
-            script.onload = resolve;
-          });
-        }
-
-        // Initialize Google Identity Services
-        window.google.accounts.id.initialize({
-          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your-google-client-id',
-          callback: handleGoogleResponse,
-          auto_select: false,
-          cancel_on_tap_outside: true,
-        });
-
-        // Check if user is already logged in (from localStorage)
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
-        }
-      } catch (error) {
-        console.error('Error initializing Google Auth:', error);
-        setError('Failed to initialize authentication');
-      } finally {
-        setLoading(false);
+        console.log('loadUser: Fetching user data from /api/users/me');
+        const res = await axios.get('/api/users/me');
+        console.log('loadUser: Received user data', res.data.data);
+        setUser(res.data.data); // Assuming user data is in res.data.data
+      } catch (err) {
+        console.error('loadUser: Error fetching user:', err);
+        localStorage.removeItem('token'); // Remove invalid token
+        setUser(null);
+        setError('Failed to load user.');
       }
-    };
-
-    initializeGoogleAuth();
-  }, []);
-
-  const handleGoogleResponse = (response) => {
-    try {
-      // Decode the JWT token
-      const token = response.credential;
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      
-      const userData = {
-        id: payload.sub,
-        name: payload.name,
-        email: payload.email,
-        picture: payload.picture,
-        token: token,
-      };
-
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      setError(null);
-    } catch (error) {
-      console.error('Error processing Google response:', error);
-      setError('Failed to process authentication response');
+    } else {
+      setUser(null);
     }
+    setLoading(false);
   };
 
-  const signInWithGoogle = () => {
-    try {
-      if (window.google) {
-        window.google.accounts.id.prompt();
-      } else {
-        setError('Google authentication not available');
-      }
-    } catch (error) {
-      console.error('Error signing in with Google:', error);
-      setError('Failed to sign in with Google');
-    }
+  // Load user on component mount
+  useEffect(() => {
+    console.log('AuthProvider useEffect: Attempting to load user');
+    loadUser();
+  }, []); // Empty dependency array means this runs only on mount
+
+  // Function to be called after successful login/signup
+  const handleAuthSuccess = async (token) => {
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    console.log('handleAuthSuccess: Token set, loading user...');
+    await loadUser(); // Load user data immediately after setting token
   };
 
   const signOut = () => {
-    try {
-      setUser(null);
-      localStorage.removeItem('user');
-      if (window.google) {
-        window.google.accounts.id.disableAutoSelect();
-      }
-      setError(null);
-    } catch (error) {
-      console.error('Error signing out:', error);
-      setError('Failed to sign out');
-    }
+    console.log('signOut: Signing out user');
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
+    setUser(null);
+    setError(null);
+    console.log('signOut: User signed out');
   };
 
   const clearError = () => {
     setError(null);
   };
 
+  // Function to trigger the session booked flag
+  const triggerSessionBookedFlag = () => {
+    console.log('Triggering session booked flag');
+    setSessionBookedFlag(prev => !prev);
+  };
+
   const value = {
     user,
     loading,
     error,
-    signInWithGoogle,
+    isAuthenticated: !!user,
+    handleAuthSuccess, // Expose this function
     signOut,
     clearError,
-    isAuthenticated: !!user,
+    sessionBookedFlag, // Expose the flag
+    triggerSessionBookedFlag, // Expose the trigger function
   };
 
   return (

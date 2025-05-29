@@ -3,12 +3,17 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
+import { Sun, Moon } from 'lucide-react';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { handleAuthSuccess } = useAuth();
+  const { darkMode, toggleDarkMode } = useTheme();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -23,18 +28,20 @@ const RegisterForm = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Confirm password is required'),
+    role: Yup.string()
+      .oneOf(['learner', 'mentor'], 'Invalid role')
+      .required('Role is required'),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const { confirmPassword, ...registerData } = values;
       const response = await axios.post('/api/users/register', registerData);
-      localStorage.setItem('token', response.data.token);
       
-      // Show success message before redirecting
+      await handleAuthSuccess(response.data.token);
+      
       setError('');
-      // Redirect after a short delay for better UX
-      setTimeout(() => navigate('/profile'), 500);
+      navigate('/profile');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     } finally {
@@ -43,13 +50,11 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center px-4 py-12 min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 sm:px-6 lg:px-8">
+    <div className="flex justify-center items-center px-4 py-12 min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 sm:px-6 lg:px-8 relative">
       <div className="w-full max-w-md transform transition-all duration-300 hover:scale-[1.01]">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden p-8 space-y-8 transition-all duration-300">
           <div className="text-center">
-            <h2 className="mt-2 text-3xl font-extrabold text-gray-900 dark:text-white">
-              Join SkillTrae
-            </h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Join SkillSwap</h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Create an account to start your learning journey
             </p>
@@ -61,6 +66,7 @@ const RegisterForm = () => {
               email: '',
               password: '',
               confirmPassword: '',
+              role: 'learner'
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -165,6 +171,41 @@ const RegisterForm = () => {
                     </div>
                     <ErrorMessage
                       name="confirmPassword"
+                      component="div"
+                      className="form-error animate-[fadeIn_0.3s_ease-in-out]"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="role" className="form-label">I want to join as a:</label>
+                    <div className="mt-2 space-y-2">
+                      <div className="flex items-center">
+                        <Field
+                          id="role-learner"
+                          name="role"
+                          type="radio"
+                          value="learner"
+                          className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300"
+                        />
+                        <label htmlFor="role-learner" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                          Learner
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <Field
+                          id="role-mentor"
+                          name="role"
+                          type="radio"
+                          value="mentor"
+                          className="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300"
+                        />
+                        <label htmlFor="role-mentor" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                          Mentor
+                        </label>
+                      </div>
+                    </div>
+                    <ErrorMessage
+                      name="role"
                       component="div"
                       className="form-error animate-[fadeIn_0.3s_ease-in-out]"
                     />

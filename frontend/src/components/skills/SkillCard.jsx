@@ -1,18 +1,45 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useAuth } from '../../context/AuthContext';
+import { Bookmark } from 'lucide-react';
 
-const SkillCard = ({ skill }) => {
+const SkillCard = ({ skill, onBookSessionClick, isBookmarked }) => {
+  const { user } = useAuth();
+  // Get the base URL (protocol, hostname, port) from the API URL
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:5000/api';
+  const backendUrl = apiUrl.replace('/api', '');
+
+  console.log('SkillCard - User:', user);
+  console.log('SkillCard - backendUrl:', backendUrl);
+  console.log('SkillCard - User Role:', user?.role);
+  console.log('SkillCard - Skill Mentors:', skill?.mentors);
+  console.log('SkillCard - Skill Owner:', skill?.owner);
+  console.log('SkillCard - Can Book:', user && user.role === 'learner' && (skill.mentors?.length > 0 || skill.owner));
+
+  const canBook = user && (user.role === 'learner' || user.role === 'both') && (skill.mentors?.length > 0 || skill.owner);
+
   return (
-    <div className="card hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-48 rounded-t-lg overflow-hidden">
         <img 
-          src={skill.image === 'default-skill.jpg' ? '/images/default-skill.svg' : skill.image} 
+          src={skill.image === 'default-skill.jpg' ? '/images/default-skill.svg' : `${backendUrl}/uploads/${skill.image}`}
           alt={skill.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-          {skill.level}
+        <div className="absolute top-2 right-2">
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            skill.level === 'beginner' ? 'bg-green-100 text-green-800' :
+            skill.level === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {skill.level}
+          </span>
         </div>
+        {isBookmarked && (
+          <div className="absolute top-2 left-2 bg-white p-1 rounded-full shadow-md">
+            <Bookmark className="w-5 h-5 text-blue-500 fill-current" />
+          </div>
+        )}
       </div>
       
       <div className="p-4">
@@ -37,9 +64,19 @@ const SkillCard = ({ skill }) => {
             </div>
           </div>
           
-          <Link to={`/skills/${skill._id}`} className="btn-primary text-sm py-1 px-3">
-            View Details
-          </Link>
+          <div className="flex items-center space-x-2">
+            <Link to={`/skills/${skill._id}`} className="btn-primary text-sm py-1 px-3">
+              View Details
+            </Link>
+            {canBook && (
+              <button
+                className="btn-secondary text-sm py-1 px-3"
+                onClick={() => onBookSessionClick(skill)}
+              >
+                Book Session
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -54,8 +91,12 @@ SkillCard.propTypes = {
     category: PropTypes.string.isRequired,
     level: PropTypes.string.isRequired,
     image: PropTypes.string,
-    averageRating: PropTypes.number
-  }).isRequired
+    averageRating: PropTypes.number,
+    mentors: PropTypes.array,
+    owner: PropTypes.object
+  }).isRequired,
+  onBookSessionClick: PropTypes.func,
+  isBookmarked: PropTypes.bool
 };
 
 export default SkillCard;

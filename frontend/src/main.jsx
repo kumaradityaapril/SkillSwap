@@ -5,19 +5,25 @@ import router from './router.jsx';
 import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
 import { ChatProvider } from './context/ChatContext';
+import { AuthProvider } from './context/AuthContext';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <UserProvider>
-        <ChatProvider>
-          <RouterProvider 
-            router={router} 
-            future={{ v7_startTransition: true }}
-          />
-        </ChatProvider>
-      </UserProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <UserProvider>
+          <ChatProvider>
+            <RouterProvider 
+              router={router} 
+              future={{ v7_startTransition: true }}
+            />
+          </ChatProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </AuthProvider>
+    <ToastContainer />
   </React.StrictMode>,
 );

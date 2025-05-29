@@ -6,4 +6,4 @@ status = 200
 [build]
 base = "frontend"
 command = "npm install && npm run build"
-publish = "frontend/dist"
+publish = "dist"

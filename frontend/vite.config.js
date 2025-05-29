@@ -10,6 +10,9 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      external: ['react-toastify'],
+    },
   },
   base: './',
 })

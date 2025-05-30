@@ -76,8 +76,6 @@ const ReviewForm = ({ session, learnerId, mentorId, onReviewSubmitted, onClose }
              <p className="text-red-500 text-xs mt-1">Please select a rating.</p>
         )}
       </div>
-
-      {/* Comment Input */}
       <div>
         <label htmlFor="comment" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Comment</label>
         <textarea
@@ -98,7 +96,6 @@ const ReviewForm = ({ session, learnerId, mentorId, onReviewSubmitted, onClose }
       {error && !success && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Review submitted successfully!</p>}
 
-      {/* Action Buttons */}
       <div className="flex justify-end space-x-2">
         <button
           type="button"

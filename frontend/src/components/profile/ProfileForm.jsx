@@ -61,7 +61,6 @@ const ProfileForm = () => {
       </div>
     );
   }
-
   return (
     <div className="p-4 mx-auto max-w-2xl">
       <h2 className="mb-6 text-2xl font-bold">Profile Settings</h2>
@@ -87,7 +86,7 @@ const ProfileForm = () => {
                 />
                 <ErrorMessage name="name" component="div" className="mt-1 text-sm text-red-500" />
               </div>
-
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700">Bio</label>
                 <Field
@@ -98,7 +97,18 @@ const ProfileForm = () => {
                 />
                 <ErrorMessage name="bio" component="div" className="mt-1 text-sm text-red-500" />
               </div>
-
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Bio</label>
+                <Field
+                  as="textarea"
+                  name="bio"
+                  rows={4}
+                  className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+                <ErrorMessage name="bio" component="div" className="mt-1 text-sm text-red-500" />
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700">Skills</label>
                 <div className="mt-1">

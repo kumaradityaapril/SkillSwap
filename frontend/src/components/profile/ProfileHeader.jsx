@@ -20,6 +20,19 @@ const ProfileHeader = () => {
           </div>
         </div>
       </div>
+       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
+      <div className="relative h-40 bg-gradient-to-r from-primary-500 to-secondary-500">
+        {/* Profile image */}
+        <div className="absolute -bottom-16 left-6">
+          <div className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white">
+            <img 
+              src={user.avatar === 'default-avatar.jpg' ? '/images/default-avatar.svg' : user.avatar} 
+              alt={user.name} 
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
       
       <div className="pt-20 pb-6 px-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">

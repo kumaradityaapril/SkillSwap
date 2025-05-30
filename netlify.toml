@@ -5,7 +5,7 @@ status = 200
 
 [[redirects]]
 from = "/api/*"
-to = "::VITE_API_URL/:splat"
+to = "::VITE_API_URL/api/:splat"
 status = 200
 force = true
 

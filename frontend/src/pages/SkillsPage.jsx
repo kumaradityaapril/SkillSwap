@@ -75,6 +75,7 @@ const SkillsPage = () => {
 
   const fetchSkills = async () => {
     try {
+      setLoading(true);
       const response = await axios.get('/api/skills');
       console.log('Skills API response data:', response.data);
       // If backend returns an empty array, use dummy data as fallback
@@ -88,7 +89,7 @@ const SkillsPage = () => {
       setLoading(false);
     } catch (err) {
       console.error('Error fetching skills:', err);
-      setError('Failed to fetch skills');
+      setError('Failed to fetch skills. Please try again later.');
       // Fallback to dummy data on error as well
       console.log('Error fetching skills, using dummy data:', dummySkills);
       setSkills(dummySkills);

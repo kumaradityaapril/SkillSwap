@@ -24,7 +24,7 @@ const SkillDetail = () => {
     const fetchSkillDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5003/api/skills/${id}`);
+        const response = await axios.get(`/api/skills/${id}`);
         setSkill(response.data.data);
         setLoading(false);
       } catch (err) {
@@ -37,7 +37,7 @@ const SkillDetail = () => {
     const fetchSkillReviews = async () => {
       try {
         setReviewsLoading(true);
-        const response = await axios.get(`http://localhost:5003/api/reviews/skill/${id}`);
+        const response = await axios.get(`/api/reviews/skill/${id}`);
         setReviews(response.data.data);
         setReviewsLoading(false);
       } catch (err) {

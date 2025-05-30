@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Python Programming",
+    "category": "Programming",
+    "level": "Beginner",
+    "description": "Learn the fundamentals of Python programming language. This course covers variables, data types, control structures, functions, and basic object-oriented programming concepts.",
+    "image": "default-skill.jpg",
+    "tags": ["Python", "Programming", "Coding", "Beginner"],
+    "owner": "64f5b1e7c5d7b3a2e1f0d8c9",
+    "averageRating": 4.5,
+    "ratingsCount": 12,
+    "availability": [
+      {
+        "day": "Monday",
+        "startTime": "09:00",
+        "endTime": "11:00"
+      },
+      {
+        "day": "Wednesday",
+        "startTime": "14:00",
+        "endTime": "16:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ]
+  },
+  {
+    "title": "UI/UX Design Fundamentals",
+    "category": "Design",
+    "level": "Intermediate",
+    "description": "Master the principles of user interface and user experience design. Learn about user research, wireframing, prototyping, and usability testing to create intuitive and engaging digital experiences.",
+    "image": "default-skill.jpg",
+    "tags": ["UI", "UX", "Design", "Figma", "Adobe XD"],
+    "owner": "64f5b1e7c5d7b3a2e1f0d8c9",
+    "averageRating": 4.8,
+    "ratingsCount": 24,
+    "availability": [
+      {
+        "day": "Tuesday",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "15:00",
+        "endTime": "17:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "13:00",
+        "endTime": "15:00"
+      }
+    ]
+  },
+  {
+    "title": "Digital Marketing Strategy",
+    "category": "Marketing",
+    "level": "Advanced",
+    "description": "Develop comprehensive digital marketing strategies for businesses. Learn about SEO, content marketing, social media marketing, email campaigns, and analytics to drive growth and engagement.",
+    "image": "default-skill.jpg",
+    "tags": ["Digital Marketing", "SEO", "Social Media", "Content Strategy"],
+    "owner": "64f5b1e7c5d7b3a2e1f0d8c9",
+    "averageRating": 4.2,
+    "ratingsCount": 18,
+    "availability": [
+      {
+        "day": "Monday",
+        "startTime": "13:00",
+        "endTime": "15:00"
+      },
+      {
+        "day": "Wednesday",
+        "startTime": "09:00",
+        "endTime": "11:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "16:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "title": "Spanish for Beginners",
+    "category": "Language",
+    "level": "Beginner",
+    "description": "Start your journey to Spanish fluency with this beginner-friendly course. Learn basic vocabulary, grammar, pronunciation, and conversational skills for everyday situations.",
+    "image": "default-skill.jpg",
+    "tags": ["Spanish", "Language Learning", "Beginner", "Conversation"],
+    "owner": "64f5b1e7c5d7b3a2e1f0d8c9",
+    "averageRating": 4.6,
+    "ratingsCount": 32,
+    "availability": [
+      {
+        "day": "Tuesday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "title": "Yoga for Stress Relief",
+    "category": "Fitness",
+    "level": "All Levels",
+    "description": "Learn yoga techniques specifically designed to reduce stress and anxiety. This practice combines gentle poses, breathing exercises, and meditation to promote relaxation and mental well-being.",
+    "image": "default-skill.jpg",
+    "tags": ["Yoga", "Stress Relief", "Meditation", "Wellness"],
+    "owner": "64f5b1e7c5d7b3a2e1f0d8c9",
+    "averageRating": 4.9,
+    "ratingsCount": 45,
+    "availability": [
+      {
+        "day": "Monday",
+        "startTime": "07:00",
+        "endTime": "08:00"
+      },
+      {
+        "day": "Wednesday",
+        "startTime": "07:00",
+        "endTime": "08:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "07:00",
+        "endTime": "08:00"
+      }
+    ]
+  }
+]

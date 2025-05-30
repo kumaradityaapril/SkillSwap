@@ -1,0 +1,227 @@
+[
+  {
+    "title": "Advanced JavaScript",
+    "category": "Programming",
+    "level": "Advanced",
+    "description": "Master advanced JavaScript concepts including closures, prototypes, async/await, and functional programming paradigms. Learn to write clean, efficient, and maintainable code for modern web applications.",
+    "image": "default-skill.svg",
+    "tags": ["JavaScript", "ES6+", "Functional Programming", "Asynchronous Programming"],
+    "availabilitySlots": [
+      {
+        "day": "Monday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Wednesday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "title": "React Native Development",
+    "category": "Mobile Development",
+    "level": "Intermediate",
+    "description": "Build cross-platform mobile applications using React Native. Learn to create native-like UIs, implement navigation, manage state, and integrate with device features and APIs.",
+    "image": "default-skill.svg",
+    "tags": ["React Native", "Mobile Apps", "Cross-Platform", "JavaScript"],
+    "availabilitySlots": [
+      {
+        "day": "Tuesday",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      },
+      {
+        "day": "Sunday",
+        "startTime": "14:00",
+        "endTime": "16:00"
+      }
+    ]
+  },
+  {
+    "title": "Data Visualization with D3.js",
+    "category": "Data Science",
+    "level": "Intermediate",
+    "description": "Learn to create interactive and dynamic data visualizations using D3.js. Master SVG manipulation, scales, axes, transitions, and interactive charts to effectively communicate complex data.",
+    "image": "default-skill.svg",
+    "tags": ["D3.js", "Data Visualization", "SVG", "JavaScript"],
+    "availabilitySlots": [
+      {
+        "day": "Monday",
+        "startTime": "17:00",
+        "endTime": "19:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "17:00",
+        "endTime": "19:00"
+      }
+    ]
+  },
+  {
+    "title": "UI/UX Design Principles",
+    "category": "Design",
+    "level": "Beginner",
+    "description": "Learn fundamental UI/UX design principles and best practices. Understand user research, wireframing, prototyping, usability testing, and how to create intuitive and accessible user interfaces.",
+    "image": "default-skill.svg",
+    "tags": ["UI Design", "UX Design", "Wireframing", "Prototyping"],
+    "availabilitySlots": [
+      {
+        "day": "Tuesday",
+        "startTime": "16:00",
+        "endTime": "18:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "16:00",
+        "endTime": "18:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "13:00",
+        "endTime": "15:00"
+      }
+    ]
+  },
+  {
+    "title": "GraphQL API Development",
+    "category": "Backend Development",
+    "level": "Intermediate",
+    "description": "Master GraphQL for building efficient and flexible APIs. Learn schema design, resolvers, mutations, subscriptions, and how to integrate GraphQL with various databases and authentication systems.",
+    "image": "default-skill.svg",
+    "tags": ["GraphQL", "API Development", "Backend", "Node.js"],
+    "availabilitySlots": [
+      {
+        "day": "Wednesday",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      },
+      {
+        "day": "Sunday",
+        "startTime": "10:00",
+        "endTime": "12:00"
+      }
+    ]
+  },
+  {
+    "title": "Docker and Containerization",
+    "category": "DevOps",
+    "level": "Intermediate",
+    "description": "Learn Docker fundamentals and containerization concepts. Master creating Dockerfiles, managing images and containers, setting up multi-container applications with Docker Compose, and container orchestration basics.",
+    "image": "default-skill.svg",
+    "tags": ["Docker", "Containerization", "DevOps", "Microservices"],
+    "availabilitySlots": [
+      {
+        "day": "Monday",
+        "startTime": "20:00",
+        "endTime": "22:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "20:00",
+        "endTime": "22:00"
+      }
+    ]
+  },
+  {
+    "title": "Machine Learning Fundamentals",
+    "category": "Data Science",
+    "level": "Beginner",
+    "description": "Introduction to machine learning concepts and algorithms. Learn about supervised and unsupervised learning, model evaluation, feature engineering, and implement basic ML algorithms using Python and scikit-learn.",
+    "image": "default-skill.svg",
+    "tags": ["Machine Learning", "Python", "scikit-learn", "Data Science"],
+    "availabilitySlots": [
+      {
+        "day": "Tuesday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "16:00",
+        "endTime": "18:00"
+      }
+    ]
+  },
+  {
+    "title": "Cybersecurity Basics",
+    "category": "Security",
+    "level": "Beginner",
+    "description": "Learn fundamental cybersecurity concepts and best practices. Understand common threats, vulnerabilities, encryption, authentication, secure coding practices, and basic penetration testing techniques.",
+    "image": "default-skill.svg",
+    "tags": ["Cybersecurity", "Network Security", "Encryption", "Ethical Hacking"],
+    "availabilitySlots": [
+      {
+        "day": "Wednesday",
+        "startTime": "17:00",
+        "endTime": "19:00"
+      },
+      {
+        "day": "Sunday",
+        "startTime": "17:00",
+        "endTime": "19:00"
+      }
+    ]
+  },
+  {
+    "title": "Blockchain Development",
+    "category": "Programming",
+    "level": "Advanced",
+    "description": "Master blockchain development concepts and techniques. Learn about distributed ledger technology, smart contracts, decentralized applications (DApps), and how to build on platforms like Ethereum using Solidity.",
+    "image": "default-skill.svg",
+    "tags": ["Blockchain", "Smart Contracts", "Ethereum", "Solidity"],
+    "availabilitySlots": [
+      {
+        "day": "Monday",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      },
+      {
+        "day": "Friday",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      }
+    ]
+  },
+  {
+    "title": "Cloud Architecture with AWS",
+    "category": "Cloud Computing",
+    "level": "Intermediate",
+    "description": "Learn to design and implement scalable, reliable, and secure cloud solutions using AWS services. Master EC2, S3, RDS, Lambda, API Gateway, and best practices for cloud architecture and deployment.",
+    "image": "default-skill.svg",
+    "tags": ["AWS", "Cloud Computing", "Serverless", "Infrastructure as Code"],
+    "availabilitySlots": [
+      {
+        "day": "Tuesday",
+        "startTime": "20:00",
+        "endTime": "22:00"
+      },
+      {
+        "day": "Thursday",
+        "startTime": "20:00",
+        "endTime": "22:00"
+      },
+      {
+        "day": "Saturday",
+        "startTime": "11:00",
+        "endTime": "13:00"
+      }
+    ]
+  }
+]

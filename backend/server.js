@@ -4,10 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
+const morgan = require("morgan")
 const path = require('path');
 const fs = require('fs');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
+
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
@@ -34,6 +36,7 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 // Temporary logging middleware
 app.use((req, res, next) => {

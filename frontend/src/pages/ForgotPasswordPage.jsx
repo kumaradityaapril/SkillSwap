@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
     setError(null);
 
     try {
-      const response = await axios.post('https://skillswap-3-ko34.onrender.com/api/auth/forgot-password', { email });
+      const response = await axios.post('/api/auth/forgot-password', { email });
       setMessage(response.data.message || 'Password reset email sent.');
       toast.success(response.data.message || 'Password reset email sent.');
     } catch (err) {

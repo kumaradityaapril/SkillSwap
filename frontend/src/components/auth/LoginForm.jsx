@@ -20,7 +20,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post('https://skillswap-3-ko34.onrender.com/api/users/login', values);
+      const response = await axios.post('/api/users/login', values);
       
       await handleAuthSuccess(response.data.token);
       

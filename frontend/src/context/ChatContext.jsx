@@ -29,7 +29,7 @@ export const ChatProvider = ({ children }) => {
   // Initialize socket connection
   useEffect(() => {
     if (user) {
-      const newSocket = io(process.env.BACKEND_URL || 'http://localhost:5004');
+      const newSocket = io(process.env.BACKEND_URL || 'https://skillswap-2-6ps6.onrender.com');
       setSocket(newSocket);
 
       return () => {
@@ -80,7 +80,7 @@ export const ChatProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5004/api/messages/conversations', {
+      const response = await axios.get('https://skillswap-2-6ps6.onrender.com/api/messages/conversations', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -108,7 +108,7 @@ export const ChatProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5004/api/messages/conversation/${userId}`, {
+      const response = await axios.get(`https://skillswap-2-6ps6.onrender.com/api/messages/conversation/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -135,7 +135,7 @@ export const ChatProvider = ({ children }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5004/api/messages', 
+      const response = await axios.post('https://skillswap-2-6ps6.onrender.com/api/messages', 
         { recipientId, content },
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -163,7 +163,7 @@ export const ChatProvider = ({ children }) => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5004/api/messages/read/${conversationId}`, {}, {
+      await axios.put(`https://skillswap-2-6ps6.onrender.com/api/messages/read/${conversationId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

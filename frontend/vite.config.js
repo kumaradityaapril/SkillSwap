@@ -12,7 +12,15 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       external: [],
+      output: {
+        manualChunks: {
+          'react-toastify': ['react-toastify']
+        }
+      }
     },
   },
   base: './',
+  optimizeDeps: {
+    include: ['react-toastify']
+  }
 })

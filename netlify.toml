@@ -3,12 +3,6 @@ from = "/"
 to = "index.html"
 status = 200
 
-[[redirects]]
-from = "/api/*"
-to = "::VITE_API_URL/api/:splat"
-status = 200
-force = true
-
 [build]
 base = "frontend"
 command = "npm install && npm run build"

@@ -87,7 +87,7 @@ export const ChatProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`/api/conversations`);
+      const response = await axios.get(`https://skillswap-3-ko34.onrender.com/api/conversations`);
       setConversations(response.data.data);
        // Initialize unread counts
        const initialUnreadCounts = {};
@@ -111,7 +111,7 @@ export const ChatProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`/api/conversations/${conversationId}`);
+      const response = await axios.get(`https://skillswap-3-ko34.onrender.com/api/conversations/${conversationId}`);
       setActiveConversation(response.data.data);
       setMessages(response.data.data.messages);
        // Mark messages as read for this conversation
@@ -120,7 +120,7 @@ export const ChatProvider = ({ children }) => {
         [conversationId]: 0
       }));
        // Optional: Send a request to the backend to mark as read
-       await axios.post(`/api/conversations/${conversationId}/mark-as-read`);
+       await axios.post(`https://skillswap-3-ko34.onrender.com/api/conversations/${conversationId}/mark-as-read`);
 
     } catch (err) {
       console.error('Error fetching messages:', err);
@@ -159,7 +159,7 @@ export const ChatProvider = ({ children }) => {
      setLoading(true);
      setError(null);
      try {
-       const response = await axios.post('/api/conversations', {
+       const response = await axios.post('https://skillswap-3-ko34.onrender.com/api/conversations', {
          participants: [user.id, recipientId],
          skill: skillId
        });
@@ -198,7 +198,7 @@ export const ChatProvider = ({ children }) => {
    const markConversationAsRead = useCallback(async (conversationId) => {
      if (!user) return;
      try {
-       await axios.post(`/api/conversations/${conversationId}/mark-as-read`);
+       await axios.post(`https://skillswap-3-ko34.onrender.com/api/conversations/${conversationId}/mark-as-read`);
         setUnreadCounts(prevCounts => ({
           ...prevCounts,
           [conversationId]: 0

@@ -36,7 +36,7 @@ const RegisterForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const { confirmPassword, ...registerData } = values;
-      const response = await axios.post('/api/users/register', registerData);
+      const response = await axios.post('https://skillswap-3-ko34.onrender.com/api/users/register', registerData);
       
       await handleAuthSuccess(response.data.token);
       

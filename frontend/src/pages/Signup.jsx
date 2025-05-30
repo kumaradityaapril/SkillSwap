@@ -27,7 +27,7 @@ const Signup = () => {
     setError('');
 
     try {
-      const response = await axios.post('/api/users/register', formData);
+      const response = await axios.post('https://skillswap-3-ko34.onrender.com/api/users/register', formData);
       if (response.data.success) {
         // Store token in localStorage
         localStorage.setItem('token', response.data.token);

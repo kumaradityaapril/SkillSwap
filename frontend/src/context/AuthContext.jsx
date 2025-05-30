@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       try {
-        console.log('loadUser: Fetching user data from /api/users/me');
-        const res = await axios.get('/api/users/me');
+        console.log('loadUser: Fetching user data from https://skillswap-3-ko34.onrender.com/api/users/me');
+        const res = await axios.get('https://skillswap-3-ko34.onrender.com/api/users/me');
         console.log('loadUser: Received user data', res.data.data);
         setUser(res.data.data); // Assuming user data is in res.data.data
       } catch (err) {

@@ -76,7 +76,7 @@ const SkillsPage = () => {
   const fetchSkills = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/skills');
+      const response = await axios.get('https://skillswap-3-ko34.onrender.com/skills');
       console.log('Skills API response data:', response.data);
       // If backend returns an empty array, use dummy data as fallback
       if (response.data.data && response.data.data.length > 0) {
@@ -100,7 +100,7 @@ const SkillsPage = () => {
   const fetchBookmarkedSkills = async () => {
     if (isAuthenticated && user) {
       try {
-        const response = await axios.get('/api/users/me');
+        const response = await axios.get('https://skillswap-3-ko34.onrender.com/api/users/me');
         // Safely access and set bookmarked skills (just the IDs)
         setBookmarkedSkills(response.data.data?.bookmarkedSkills?.map(skill => skill._id || skill) || []);
       } catch (err) {
@@ -114,7 +114,7 @@ const SkillsPage = () => {
     setLoadingSkillDetails(true);
     setSkillDetailsError(null);
     try {
-      const response = await axios.get(`/api/skills/${skillId}`);
+      const response = await axios.get(`https://skillswap-3-ko34.onrender.com/api/skills/${skillId}`);
       console.log('Skill details API response:', response.data);
       setSelectedSkill(response.data.data);
     } catch (err) {

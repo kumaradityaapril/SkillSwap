@@ -23,10 +23,10 @@ const Profile = () => {
         setLoading(true);
         setError(null);
         try {
-          const skillsResponse = await axios.get('/api/users/me/skills');
+          const skillsResponse = await axios.get('https://skillswap-3-ko34.onrender.com/api/users/me/skills');
           setUserSkills(skillsResponse.data.data);
 
-          const statsResponse = await axios.get('/api/users/me/stats');
+          const statsResponse = await axios.get('https://skillswap-3-ko34.onrender.com/api/users/me/stats');
           setStats(statsResponse.data.data);
 
         } catch (err) {

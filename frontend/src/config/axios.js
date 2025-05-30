@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5003/api', // Use VITE_ prefix for Vite env vars
+  baseURL: import.meta.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com', // Use VITE_ prefix for Vite env vars
   headers: {
     'Content-Type': 'application/json'
   }

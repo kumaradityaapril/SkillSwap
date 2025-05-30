@@ -36,7 +36,7 @@ const SkillPostForm = () => {
   const fetchMentorInfo = async () => {
     try {
       setLoadingMentorInfo(true);
-      const response = await axios.get(`/api/users/me`);
+      const response = await axios.get(`https://skillswap-3-ko34.onrender.com/api/users/me`);
       setMentorInfo(response.data.data);
       setError(null);
     } catch (err) {
@@ -85,7 +85,7 @@ const SkillPostForm = () => {
         formDataToSend.append('image', selectedFile);
       }
 
-      const response = await axios.post('/api/skills', formDataToSend, {
+      const response = await axios.post('https://skillswap-3-ko34.onrender.com/skills', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

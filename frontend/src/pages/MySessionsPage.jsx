@@ -18,7 +18,7 @@ const MySessionsPage = () => {
         setLoading(true);
         setError(null);
         try {
-          const sessionsResponse = await axios.get('/api/users/me/sessions');
+          const sessionsResponse = await axios.get('https://skillswap-3-ko34.onrender.com/api/users/me/sessions');
           const sortedSessions = sessionsResponse.data.data.sort((a, b) => {
             const dateA = new Date(`${a.date}T${a.startTime}`);
             const dateB = new Date(`${b.date}T${b.startTime}`);

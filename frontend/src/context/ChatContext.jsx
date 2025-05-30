@@ -30,7 +30,7 @@ export const ChatProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       // Use VITE_API_URL for socket connection
-      const newSocket = io(import.meta.env.VITE_API_URL || 'http://localhost:5003');
+      const newSocket = io(import.meta.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com');
       setSocket(newSocket);
 
       return () => {

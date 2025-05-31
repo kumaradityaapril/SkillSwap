@@ -23,59 +23,78 @@ const messageRoutes = require('./routes/messageRoutes');
 const app = express();
 const server = http.createServer(app);
 
-// CORS configuration
+// CORS configuration - Allow all origins and methods
 const corsOptions = {
-    origin: true, // Reflect the request origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    origin: function (origin, callback) {
+        // Allow all origins
+        callback(null, true);
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'Origin',
+        'Access-Control-Allow-Headers',
+        'Access-Control-Request-Headers',
+        'Access-Control-Request-Method'
+    ],
+    exposedHeaders: [
+        'Content-Length',
+        'Content-Type',
+        'Authorization',
+        'Access-Control-Allow-Origin'
+    ],
     credentials: true,
     optionsSuccessStatus: 200,
-    preflightContinue: false
+    preflightContinue: false,
+    maxAge: 86400 // 24 hours
 };
 
-// Detailed request logging middleware
+// Apply CORS middleware first
+app.use(cors(corsOptions));
+
+// Request logging middleware
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    const method = req.method;
-    const url = req.originalUrl;
+    const { method, originalUrl, headers, query, body } = req;
+    const origin = headers.origin || 'unknown origin';
     
+    // Log request details
     console.log('\n=== Incoming Request ===');
-    console.log(`${method} ${url} from ${origin || 'unknown origin'}`);
-    console.log('Headers:', JSON.stringify(req.headers, null, 2));
-    console.log('Query:', req.query);
+    console.log(`${method} ${originalUrl} from ${origin}`);
+    
+    // Skip logging for OPTIONS requests after initial log
+    if (method === 'OPTIONS') {
+        console.log('Handling OPTIONS preflight request');
+        return next();
+    }
+    
+    console.log('Headers:', JSON.stringify(headers, null, 2));
+    console.log('Query:', query);
     
     // Log request body for non-GET requests
     if (method !== 'GET' && method !== 'HEAD') {
-        console.log('Body:', req.body);
-    }
-    
-    // Set CORS headers
-    res.header('Access-Control-Allow-Origin', origin || '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Expose-Headers', 'Content-Length, Content-Type');
-    
-    // Handle preflight requests
-    if (method === 'OPTIONS') {
-        console.log('Handling OPTIONS preflight request');
-        return res.status(200).end();
+        console.log('Body:', body);
     }
     
     // Add response logging
     const originalEnd = res.end;
     res.end = function(chunk, encoding) {
         console.log('\n=== Response ===');
-        console.log(`Status: ${res.statusCode} ${res.statusMessage}`);
+        console.log(`Status: ${res.statusCode} ${res.statusMessage || ''}`);
         console.log('Headers:', JSON.stringify(res.getHeaders(), null, 2));
+        
         if (chunk) {
             try {
                 const body = JSON.parse(chunk.toString());
-                console.log('Body:', body);
+                console.log('Response Body:', body);
             } catch (e) {
-                console.log('Body:', chunk?.toString()?.substring(0, 200) + '...');
+                const chunkStr = chunk?.toString() || '';
+                console.log('Response Body (raw):', chunkStr.substring(0, 200) + (chunkStr.length > 200 ? '...' : ''));
             }
         }
+        
         originalEnd.call(res, chunk, encoding);
     };
     
@@ -88,16 +107,23 @@ app.use(cors(corsOptions));
 // Handle preflight requests
 app.options('*', cors(corsOptions));
 
-// Socket.io setup
+// Socket.io setup with permissive CORS
 const io = new Server(server, {
     cors: {
-        origin: (origin, callback) => {
+        origin: function(origin, callback) {
             console.log('Socket.IO connection from origin:', origin);
-            callback(null, true); // Allow all origins
+            // Allow all origins
+            callback(null, true);
         },
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+        allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'X-Requested-With',
+            'Accept',
+            'Origin'
+        ]
     }
 });
 

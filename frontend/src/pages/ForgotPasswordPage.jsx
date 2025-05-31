@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { toast } from 'react-toastify';
 import { Mail } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
     setError(null);
 
     try {
-      const response = await axios.post('/api/auth/forgot-password', { email });
+      const response = await api.post('/auth/forgot-password', { email });
       setMessage(response.data.message || 'Password reset email sent.');
       toast.success(response.data.message || 'Password reset email sent.');
     } catch (err) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -36,8 +36,8 @@ const SkillPostForm = () => {
   const fetchMentorInfo = async () => {
     try {
       setLoadingMentorInfo(true);
-      const response = await axios.get(`/api/users/me`);
-      setMentorInfo(response.data.data);
+      const response = await api.get('/users/me');
+      setMentorInfo(response.data);
       setError(null);
     } catch (err) {
       console.error('Error fetching mentor info:', err);
@@ -85,11 +85,7 @@ const SkillPostForm = () => {
         formDataToSend.append('image', selectedFile);
       }
 
-      const response = await axios.post('/api/skills', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/skills', formDataToSend);
 
       setSuccess(true);
       setFormData({

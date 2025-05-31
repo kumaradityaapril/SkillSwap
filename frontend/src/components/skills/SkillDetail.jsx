@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../utils/api';
 import StartChatButton from '../profile/StartChatButton';
 import SessionBooking from '../sessions/SessionBooking';
 import { useAuth } from '../../context/AuthContext';
@@ -24,8 +24,8 @@ const SkillDetail = () => {
     const fetchSkillDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/skills/${id}`);
-        setSkill(response.data.data);
+        const response = await api.get(`/skills/${id}`);
+        setSkill(response.data);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch skill details. Please try again later.');
@@ -37,8 +37,8 @@ const SkillDetail = () => {
     const fetchSkillReviews = async () => {
       try {
         setReviewsLoading(true);
-        const response = await axios.get(`/api/reviews/skill/${id}`);
-        setReviews(response.data.data);
+        const response = await api.get(`/reviews/skill/${id}`);
+        setReviews(response.data);
         setReviewsLoading(false);
       } catch (err) {
         setReviewsError('Failed to fetch reviews.');
@@ -50,8 +50,8 @@ const SkillDetail = () => {
     const checkBookmarkStatus = async () => {
       if (isAuthenticated && user) {
         try {
-          const response = await axios.get('/api/users/me');
-          const bookmarkedSkills = response.data.data?.bookmarkedSkills?.map(skill => skill._id || skill) || [];
+          const response = await api.get('/users/me');
+          const bookmarkedSkills = response.data.bookmarkedSkills?.map(skill => skill._id || skill) || [];
           setIsBookmarked(bookmarkedSkills.includes(id));
         } catch (err) {
           console.error('Error checking bookmark status:', err);
@@ -90,12 +90,12 @@ const SkillDetail = () => {
     setBookmarkLoading(true);
     try {
       if (isBookmarked) {
-        await axios.delete(`/api/users/me/bookmark/${id}`);
+        await api.delete(`/users/me/bookmark/${id}`);
         setIsBookmarked(false);
         alert('Skill removed from bookmarks!');
       } else {
-        await axios.post('/api/users/me/bookmark', { skillId: id });
-        setIsBookmarked(true);
+        const response = await api.post(`/users/bookmark`, { skillId: id });
+        setIsBookmarked(response.data.isBookmarked);
         alert('Skill bookmarked!');
       }
     } catch (err) {

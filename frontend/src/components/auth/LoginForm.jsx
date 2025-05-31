@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
@@ -20,9 +20,13 @@ const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post('/api/users/login', values);
+      const response = await api.post('/users/login', values);
       
-      await handleAuthSuccess(response.data.token);
+      if (response.data && response.data.token) {
+        await handleAuthSuccess(response.data.token);
+      } else {
+        throw new Error('No token received');
+      }
       
       setError('');
       navigate('/profile');

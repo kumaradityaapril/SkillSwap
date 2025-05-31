@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const ProfileForm = () => {
   const [error, setError] = useState('');
@@ -11,13 +11,11 @@ const ProfileForm = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('/api/users/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.get('/users/me');
         setUserData(response.data);
       } catch (err) {
         setError('Failed to load profile data');
+        console.error('Error fetching user data:', err);
       } finally {
         setLoading(false);
       }
@@ -42,13 +40,11 @@ const ProfileForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.put('/api/users/profile', values, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.put('/users/profile', values);
       setError('');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to update profile');
+      console.error('Error updating profile:', err);
     } finally {
       setSubmitting(false);
     }

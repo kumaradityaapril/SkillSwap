@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { User, Mail, Calendar, Award, BookOpen, Clock, Star, Users, LogIn, ChevronRight, Shield, Zap, Trophy, ThumbsUp } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -23,10 +23,11 @@ const Profile = () => {
         setLoading(true);
         setError(null);
         try {
-          const skillsResponse = await axios.get('/api/users/me/skills');
+          const [skillsResponse, statsResponse] = await Promise.all([
+            api.get('/users/me/skills'),
+            api.get('/users/me/stats')
+          ]);
           setUserSkills(skillsResponse.data.data);
-
-          const statsResponse = await axios.get('/api/users/me/stats');
           setStats(statsResponse.data.data);
 
         } catch (err) {

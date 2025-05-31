@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../utils/api';
 import { Clock, User, Calendar as CalendarIcon, Star } from 'lucide-react';
 import ReviewForm from '../components/reviews/ReviewForm';
 
@@ -18,8 +18,8 @@ const MySessionsPage = () => {
         setLoading(true);
         setError(null);
         try {
-          const sessionsResponse = await axios.get('/api/users/me/sessions');
-          const sortedSessions = sessionsResponse.data.data.sort((a, b) => {
+          const sessionsResponse = await api.get('/users/me/sessions');
+          const sortedSessions = sessionsResponse.data.sort((a, b) => {
             const dateA = new Date(`${a.date}T${a.startTime}`);
             const dateB = new Date(`${b.date}T${b.startTime}`);
             return dateB - dateA;

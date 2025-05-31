@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useUser } from './UserContext';
 import io from 'socket.io-client';
 
@@ -29,7 +29,9 @@ export const ChatProvider = ({ children }) => {
   // Initialize socket connection
   useEffect(() => {
     if (user) {
-      const newSocket = io(process.env.BACKEND_URL || 'http://localhost:5004');
+      const wsUrl = import.meta.env.VITE_REACT_APP_WS_URL || 
+                  (import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:5003').replace(/^http/, 'ws');
+      const newSocket = io(wsUrl);
       setSocket(newSocket);
 
       return () => {
@@ -80,7 +82,7 @@ export const ChatProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5004/api/messages/conversations', {
+      const response = await api.get('/messages/conversations', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -108,7 +110,7 @@ export const ChatProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5004/api/messages/conversation/${userId}`, {
+      const response = await api.get(`/messages/conversation/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -135,7 +137,7 @@ export const ChatProvider = ({ children }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5004/api/messages', 
+      const response = await api.post('/messages', 
         { recipientId, content },
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -163,7 +165,7 @@ export const ChatProvider = ({ children }) => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5004/api/messages/read/${conversationId}`, {}, {
+      await api.put(`/messages/read/${conversationId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

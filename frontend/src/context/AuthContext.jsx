@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios
+import api from '../utils/api'; // Import centralized API configuration
 
 const AuthContext = createContext();
 
@@ -21,10 +21,9 @@ export const AuthProvider = ({ children }) => {
   const loadUser = async () => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       try {
-        console.log('loadUser: Fetching user data from /api/users/me');
-        const res = await axios.get('/api/users/me');
+        console.log('loadUser: Fetching user data from /users/me');
+        const res = await api.get('/users/me');
         console.log('loadUser: Received user data', res.data.data);
         setUser(res.data.data); // Assuming user data is in res.data.data
       } catch (err) {
@@ -48,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   // Function to be called after successful login/signup
   const handleAuthSuccess = async (token) => {
     localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    // The API interceptor will handle the token for subsequent requests
     console.log('handleAuthSuccess: Token set, loading user...');
     await loadUser(); // Load user data immediately after setting token
   };
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = () => {
     console.log('signOut: Signing out user');
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    // The API interceptor will handle the token removal
     setUser(null);
     setError(null);
     console.log('signOut: User signed out');

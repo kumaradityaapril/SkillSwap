@@ -25,9 +25,10 @@ const server = http.createServer(app);
 
 // CORS configuration
 const allowedOrigins = [
-    'https://skill-ld3t2s8n9-chandukt29092004-gmailcoms-projects.vercel.app',
-    'https://skill-dep-chandukt29092004-gmailcoms-projects.vercel.app',
-    'https://skill-5bwf0yqnv-chandukt29092004-gmailcoms-projects.vercel.app',
+    'https://skill-dep.vercel.app',
+    'https://skill-dep-*.vercel.app', // This will match all preview deployments
+    'https://skill-dep-*.vercel.app',
+    'https://skill-*.vercel.app',
     'https://ojtskillswap.netlify.app',
     'http://localhost:5173'
 ];
@@ -37,14 +38,28 @@ const corsOptions = {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
+        // Check if origin is in allowedOrigins
         if (allowedOrigins.includes(origin)) {
-            // Set the Access-Control-Allow-Origin to the specific origin
             return callback(null, origin);
         }
         
-        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-        console.error(msg, 'Origin:', origin);
-        return callback(new Error(msg), false);
+        // Check for wildcard domains
+        const originHost = new URL(origin).hostname;
+        const isAllowed = allowedOrigins.some(allowedOrigin => {
+            if (allowedOrigin.includes('*')) {
+                const regex = new RegExp('^' + allowedOrigin.replace(/\*/g, '.*') + '$');
+                return regex.test(originHost);
+            }
+            return false;
+        });
+        
+        if (isAllowed) {
+            return callback(null, origin);
+        }
+        
+        console.log('CORS blocked for origin:', origin);
+        console.log('Allowed origins:', allowedOrigins);
+        return callback(new Error('Not allowed by CORS'));
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -67,10 +82,26 @@ const io = new Server(server, {
             // Allow requests with no origin (like mobile apps or curl requests)
             if (!origin) return callback(null, true);
             
+            // Check if origin is in allowedOrigins
             if (allowedOrigins.includes(origin)) {
                 return callback(null, origin);
             }
             
+            // Check for wildcard domains
+            const originHost = new URL(origin).hostname;
+            const isAllowed = allowedOrigins.some(allowedOrigin => {
+                if (allowedOrigin.includes('*')) {
+                    const regex = new RegExp('^' + allowedOrigin.replace(/\*/g, '.*') + '$');
+                    return regex.test(originHost);
+                }
+                return false;
+            });
+            
+            if (isAllowed) {
+                return callback(null, origin);
+            }
+            
+            console.log('Socket.IO CORS blocked for origin:', origin);
             return callback(new Error('Not allowed by CORS'));
         },
         methods: ['GET', 'POST'],

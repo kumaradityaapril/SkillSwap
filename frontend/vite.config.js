@@ -18,27 +18,29 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'https://skilldep.onrender.com',
+        target: mode === 'production' ? 'https://skilldep.onrender.com' : 'http://localhost:3000',
         changeOrigin: true,
-        secure: true,
+        secure: mode !== 'production',
         rewrite: (path) => path.replace(/^\/api/, ''),
         configure: (proxy, _options) => {
           proxy.on('proxyReq', (proxyReq) => {
             proxyReq.setHeader('X-Requested-With', 'XMLHttpRequest');
           });
           proxy.on('proxyRes', (proxyRes) => {
-            proxyRes.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
+            proxyRes.headers['Access-Control-Allow-Origin'] = mode === 'production' ? 'https://skilldep.onrender.com' : 'http://localhost:5173';
             proxyRes.headers['Access-Control-Allow-Credentials'] = 'true';
           });
         }
       },
       '/socket.io': {
-        target: process.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com/api',
-        ws: true
+        target: mode === 'production' ? 'https://skilldep.onrender.com' : 'http://localhost:3000',
+        ws: true,
+        changeOrigin: true,
+        secure: mode !== 'production'
       }
     },
     cors: {
-      origin: 'http://localhost:5173',
+      origin: mode === 'production' ? 'https://skilldep.onrender.com' : 'http://localhost:5173',
       credentials: true
     }
   },

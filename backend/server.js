@@ -26,6 +26,7 @@ const server = http.createServer(app);
 // CORS configuration
 const allowedOrigins = [
     'https://skill-ld3t2s8n9-chandukt29092004-gmailcoms-projects.vercel.app',
+    'https://skill-dep-chandukt29092004-gmailcoms-projects.vercel.app',
     'https://ojtskillswap.netlify.app',
     'http://localhost:5173'
 ];

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance with default config
 const api = axios.create({
-  baseURL: 'https://skillswap-3-ko34.onrender.com/api',
+  baseURL: 'https://skilldep.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },

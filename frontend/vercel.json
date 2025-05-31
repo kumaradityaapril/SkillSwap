@@ -14,6 +14,6 @@
     { "src": "/.*", "dest": "/index.html" }
   ],
   "env": {
-    "VITE_REACT_APP_API_URL": "https://skillswap-3-ko34.onrender.com"
+    "VITE_REACT_APP_API_URL": "https://skilldep.onrender.com"
   }
 }

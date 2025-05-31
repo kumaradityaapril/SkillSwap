@@ -18,15 +18,29 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com/api',
+        target: 'https://skilldep.onrender.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy, _options) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('X-Requested-With', 'XMLHttpRequest');
+          });
+          proxy.on('proxyRes', (proxyRes) => {
+            proxyRes.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
+            proxyRes.headers['Access-Control-Allow-Credentials'] = 'true';
+          });
+        }
       },
       '/socket.io': {
         target: process.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com/api',
         ws: true
       }
     },
+    cors: {
+      origin: 'http://localhost:5173',
+      credentials: true
+    }
   },
   
   build: {

@@ -27,6 +27,7 @@ const server = http.createServer(app);
 const allowedOrigins = [
     'https://skill-ld3t2s8n9-chandukt29092004-gmailcoms-projects.vercel.app',
     'https://skill-dep-chandukt29092004-gmailcoms-projects.vercel.app',
+    'https://skill-5bwf0yqnv-chandukt29092004-gmailcoms-projects.vercel.app',
     'https://ojtskillswap.netlify.app',
     'http://localhost:5173'
 ];
@@ -36,18 +37,21 @@ const corsOptions = {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            console.error(msg, 'Origin:', origin);
-            return callback(new Error(msg), false);
+        if (allowedOrigins.includes(origin)) {
+            // Set the Access-Control-Allow-Origin to the specific origin
+            return callback(null, origin);
         }
-        return callback(null, true);
+        
+        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+        console.error(msg, 'Origin:', origin);
+        return callback(new Error(msg), false);
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
     optionsSuccessStatus: 200,
-    preflightContinue: false
+    preflightContinue: false,
+    maxAge: 86400 // 24 hours
 };
 
 // Apply CORS middleware
@@ -63,14 +67,15 @@ const io = new Server(server, {
             // Allow requests with no origin (like mobile apps or curl requests)
             if (!origin) return callback(null, true);
             
-            if (allowedOrigins.indexOf(origin) !== -1) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, origin);
             }
+            
+            return callback(new Error('Not allowed by CORS'));
         },
         methods: ['GET', 'POST'],
-        credentials: true
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
     }
 });
 

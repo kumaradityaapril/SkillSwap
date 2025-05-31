@@ -24,21 +24,50 @@ const app = express();
 const server = http.createServer(app);
 
 // CORS configuration
+const allowedOrigins = [
+    'https://skill-ld3t2s8n9-chandukt29092004-gmailcoms-projects.vercel.app',
+    'https://ojtskillswap.netlify.app',
+    'http://localhost:5173'
+];
+
 const corsOptions = {
-    origin: '*', // Allow all origins in development
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            console.error(msg, 'Origin:', origin);
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    optionsSuccessStatus: 200 // For legacy browser support
+    optionsSuccessStatus: 200,
+    preflightContinue: false
 };
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
 // Socket.io setup
 const io = new Server(server, {
     cors: {
-        origin: '*', // Allow all origins for WebSocket connections
+        origin: (origin, callback) => {
+            // Allow requests with no origin (like mobile apps or curl requests)
+            if (!origin) return callback(null, true);
+            
+            if (allowedOrigins.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         methods: ['GET', 'POST'],
         credentials: true
     }

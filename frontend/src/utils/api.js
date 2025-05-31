@@ -5,10 +5,12 @@ const api = axios.create({
   baseURL: 'https://skilldep.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept': 'application/json'
   },
   withCredentials: true,
-  crossDomain: true
+  crossDomain: true,
+  timeout: 10000 // 10 seconds
 });
 
 // Add request interceptor for logging

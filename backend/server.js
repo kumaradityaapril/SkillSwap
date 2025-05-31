@@ -24,50 +24,33 @@ const app = express();
 const server = http.createServer(app);
 
 // CORS configuration
-const allowedOrigins = [
-    'https://skill-dep.vercel.app',
-    'https://skill-dep-*.vercel.app', // This will match all preview deployments
-    'https://skill-dep-*.vercel.app',
-    'https://skill-*.vercel.app',
-    'https://ojtskillswap.netlify.app',
-    'http://localhost:5173'
-];
-
 const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        // Check if origin is in allowedOrigins
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, origin);
-        }
-        
-        // Check for wildcard domains
-        const originHost = new URL(origin).hostname;
-        const isAllowed = allowedOrigins.some(allowedOrigin => {
-            if (allowedOrigin.includes('*')) {
-                const regex = new RegExp('^' + allowedOrigin.replace(/\*/g, '.*') + '$');
-                return regex.test(originHost);
-            }
-            return false;
-        });
-        
-        if (isAllowed) {
-            return callback(null, origin);
-        }
-        
-        console.log('CORS blocked for origin:', origin);
-        console.log('Allowed origins:', allowedOrigins);
-        return callback(new Error('Not allowed by CORS'));
-    },
+    origin: true, // Reflect the request origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
     optionsSuccessStatus: 200,
-    preflightContinue: false,
-    maxAge: 86400 // 24 hours
+    preflightContinue: false
 };
+
+// Manual CORS middleware for logging
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    console.log('Incoming request from origin:', origin);
+    
+    // Set CORS headers
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    
+    next();
+});
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
@@ -79,30 +62,8 @@ app.options('*', cors(corsOptions));
 const io = new Server(server, {
     cors: {
         origin: (origin, callback) => {
-            // Allow requests with no origin (like mobile apps or curl requests)
-            if (!origin) return callback(null, true);
-            
-            // Check if origin is in allowedOrigins
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, origin);
-            }
-            
-            // Check for wildcard domains
-            const originHost = new URL(origin).hostname;
-            const isAllowed = allowedOrigins.some(allowedOrigin => {
-                if (allowedOrigin.includes('*')) {
-                    const regex = new RegExp('^' + allowedOrigin.replace(/\*/g, '.*') + '$');
-                    return regex.test(originHost);
-                }
-                return false;
-            });
-            
-            if (isAllowed) {
-                return callback(null, origin);
-            }
-            
-            console.log('Socket.IO CORS blocked for origin:', origin);
-            return callback(new Error('Not allowed by CORS'));
+            console.log('Socket.IO connection from origin:', origin);
+            callback(null, true); // Allow all origins
         },
         methods: ['GET', 'POST'],
         credentials: true,

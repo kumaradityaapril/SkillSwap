@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
@@ -36,12 +36,14 @@ const RegisterForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const { confirmPassword, ...registerData } = values;
-      const response = await axios.post('/api/users/register', registerData);
+      const response = await api.post('/users/register', registerData);
       
-      await handleAuthSuccess(response.data.token);
-      
-      setError('');
-      navigate('/profile');
+      if (response.data && response.data.token) {
+        await handleAuthSuccess(response.data.token);
+        navigate('/profile');
+      } else {
+        throw new Error('Registration successful but no token received');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
     } finally {

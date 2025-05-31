@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth } from '../../context/AuthContext';
 import { Bookmark } from 'lucide-react';
+import api from '../../utils/api';
 
 const SkillCard = ({ skill, onBookSessionClick, isBookmarked }) => {
   const { user } = useAuth();
-  // Get the base URL (protocol, hostname, port) from the API URL
-  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:5003/api';
-  const backendUrl = apiUrl.replace('/api', '');
+  // Get the base URL from the API instance
+  const backendUrl = api.defaults.baseURL?.replace('/api', '') || '';
 
   console.log('SkillCard - User:', user);
   console.log('SkillCard - backendUrl:', backendUrl);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import SkillCard from './SkillCard';
 
 const SkillsPage = () => {
@@ -16,8 +16,8 @@ const SkillsPage = () => {
     const fetchSkills = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5003/api/skills');
-        setSkills(response.data.data);
+        const response = await api.get('/skills');
+        setSkills(response.data);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch skills. Please try again later.');

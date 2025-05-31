@@ -1,26 +1,64 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    mode === 'analyze' && visualizer({
+      open: true,
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    })
+  ].filter(Boolean),
+  
   server: {
+    port: 5173,
+    strictPort: true,
     proxy: {
-      '/api': process.env.VITE_API_URL || 'http://localhost:5003',
-    },
-  },
-  build: {
-    outDir: 'dist',
-    rollupOptions: {
-      external: [],
-      output: {
-        manualChunks: {
-          'react-toastify': ['react-toastify']
-        }
+      '/api': {
+        target: process.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/socket.io': {
+        target: process.env.VITE_API_URL || 'https://skillswap-3-ko34.onrender.com/api',
+        ws: true
       }
     },
   },
-  base: './',
+  
+  build: {
+    outDir: 'dist',
+    sourcemap: mode === 'production',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          form: ['formik', 'yup'],
+          ui: ['@headlessui/react', '@heroicons/react'],
+          'react-toastify': ['react-toastify']
+        },
+      },
+    },
+  },
+  
+  base: '/',
+  
+  preview: {
+    port: 4173,
+    strictPort: true,
+  },
+  
   optimizeDeps: {
-    include: ['react-toastify']
-  }
-})
+    include: ['react', 'react-dom', 'react-router-dom', 'react-toastify']
+  },
+}));

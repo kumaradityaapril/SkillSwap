@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Calendar as CalendarIcon, Clock, User, Check, X, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import api from '../../utils/api';
 import Calendar from './Calendar';
 import { toast } from 'react-toastify';
 
@@ -32,15 +32,11 @@ const SessionBooking = ({ skillId, mentorId }) => {
     if (!selectedDate) return;
     console.log('Fetching available slots for date:', selectedDate.toISOString().split('T')[0], 'skillId:', skillId, 'mentorId:', mentorId);
     try {
-      const response = await axios.get(`/api/sessions/available-slots`, {
-        params: {
-          mentorId,
-          date: selectedDate.toISOString().split('T')[0],
-          skillId
-        }
+      const response = await api.get(`/mentors/${mentorId}/availability`, {
+        params: { date: selectedDate.toISOString().split('T')[0] }
       });
       console.log('Available slots fetched:', response.data);
-      setAvailableSlots(response.data);
+      setAvailableSlots(response.data.availableSlots);
     } catch (err) {
       setError('Failed to fetch available slots');
     }
@@ -48,12 +44,7 @@ const SessionBooking = ({ skillId, mentorId }) => {
 
   const fetchSessionRequests = async () => {
     try {
-      const response = await axios.get(`/api/sessions/requests`, {
-        params: {
-          skillId,
-          mentorId: user.role === 'mentor' ? user.id : mentorId
-        }
-      });
+      const response = await api.get('/users/me/sessions');
       setSessionRequests(response.data);
     } catch (err) {
       setError('Failed to fetch session requests');
@@ -80,7 +71,7 @@ const SessionBooking = ({ skillId, mentorId }) => {
       };
       console.log('Sending session request body:', requestBody);
 
-      await axios.post('/api/sessions', requestBody);
+      await api.post('/sessions', requestBody);
 
       console.log('Session request successful for slot:', timeSlot);
       toast.success('Session request sent successfully!');
@@ -98,7 +89,7 @@ const SessionBooking = ({ skillId, mentorId }) => {
   const handleSessionResponse = async (sessionId, status) => {
     try {
       setLoading(true);
-      await axios.put(`/api/sessions/${sessionId}/respond`, {
+      await api.put(`/sessions/${sessionId}/respond`, {
         status
       });
       await fetchSessionRequests();

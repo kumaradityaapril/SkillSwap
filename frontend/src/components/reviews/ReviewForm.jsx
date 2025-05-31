@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { Star } from 'lucide-react';
 
 const ReviewForm = ({ session, learnerId, mentorId, onReviewSubmitted, onClose }) => {
@@ -16,7 +16,7 @@ const ReviewForm = ({ session, learnerId, mentorId, onReviewSubmitted, onClose }
     setSubmitting(true);
 
     try {
-      const response = await axios.post('/api/reviews', {
+      await api.post('/reviews', {
         sessionId: session._id,
         skill: session.skill._id, // Assuming session.skill is populated or has _id
         learner: learnerId,
@@ -25,13 +25,11 @@ const ReviewForm = ({ session, learnerId, mentorId, onReviewSubmitted, onClose }
         comment,
       });
 
-      if (response.data.success) {
-        setSuccess(true);
-        // Optionally, clear form or close modal after a short delay
-        setTimeout(() => {
-          onReviewSubmitted();
-        }, 1500);
-      }
+      setSuccess(true);
+      // Optionally, clear form or close modal after a short delay
+      setTimeout(() => {
+        onReviewSubmitted();
+      }, 1500);
 
     } catch (err) {
       console.error('Error submitting review:', err);

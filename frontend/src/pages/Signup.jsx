@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { User, Mail, Lock, BookOpen, Users } from 'lucide-react';
 
 const Signup = () => {
@@ -27,8 +27,8 @@ const Signup = () => {
     setError('');
 
     try {
-      const response = await axios.post('/api/users/register', formData);
-      if (response.data.success) {
+      const response = await api.post('/users/register', formData);
+      if (response.data) {
         // Store token in localStorage
         localStorage.setItem('token', response.data.token);
         // Redirect to profile page
